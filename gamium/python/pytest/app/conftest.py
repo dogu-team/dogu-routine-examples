@@ -36,7 +36,7 @@ def driver(device: DeviceClient):
     options = AppiumOptions().load_capabilities(
         {
             "platformName": platform,
-            "deviceName": serial,
+            "udid": serial,
             "automationName": automationName,
             "newCommandTimeout": 1800,
         }
