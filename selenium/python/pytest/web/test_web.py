@@ -1,6 +1,5 @@
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from pytest_dogu_sdk.common import DoguClient
 
 
 def test_go_to_dogutech_io(driver: WebDriver):
