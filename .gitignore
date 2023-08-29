@@ -1,0 +1,15 @@
+# nodejs
+**/node_modules/*
+**/package-lock.json
+**/yarn.lock
+.DS_Store
+
+# python
+__pycache__
+.venv
+
+# pytest
+.pytest_cache
+
+# playwright
+test-results
