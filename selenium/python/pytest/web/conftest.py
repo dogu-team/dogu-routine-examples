@@ -2,6 +2,7 @@ import os
 
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 pytest_plugins = ["pytest_dogu_report"]
 
@@ -17,6 +18,7 @@ def driver():
     options = webdriver.ChromeOptions()
     if browser_path:
         options.binary_location = browser_path
-    driver = webdriver.Chrome(executable_path=browser_driver_path, options=options)
+    service = ChromeService(executable_path=browser_driver_path)
+    driver = webdriver.Chrome(service=service, options=options)
     yield driver
     driver.quit()
