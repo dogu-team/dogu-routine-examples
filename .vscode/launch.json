@@ -5,12 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Module",
+      "name": "Python: gamium",
       "type": "python",
       "request": "launch",
       "module": "pytest",
       "justMyCode": true,
-      "args": ["--capture=no"],
+      "args": [
+        "--capture=no",
+        "--rootdir=${workspaceFolder}/gamium/python/pytest",
+        "${workspaceFolder}/gamium/python/pytest/app/test_dogurpgsample.py"
+      ]
     }
   ]
 }

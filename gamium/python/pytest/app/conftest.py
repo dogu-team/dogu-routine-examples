@@ -15,6 +15,7 @@ platform = os.environ.get("DOGU_DEVICE_PLATFORM", "LOCAL_DEVICE_PLATFORM")
 is_ci = os.environ.get("CI", "false") == "true"
 automationName = "UiAutomator2" if platform == "android" else "XCUITest"
 
+pytest_plugins = ["pytest_dogu_report"]
 
 @pytest.fixture(scope="session")
 def device():
@@ -66,6 +67,8 @@ def gamium(driver: WebDriver, host: DeviceHostClient, device: DeviceClient):
 
     print("teardown gamium")
 
+    gamium.sleep(4000)
+    gamium.actions().app_quit().perform()
     forward_closer.close()
 
 
