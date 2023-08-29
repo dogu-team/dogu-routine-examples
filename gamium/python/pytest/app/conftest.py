@@ -11,9 +11,9 @@ serial = os.environ.get("DOGU_DEVICE_SERIAL", "LOCAL_DEVICE_SERIAL")
 device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
 device_gamium_server_port = 50061
 
-platform = os.environ.get("DOGU_DEVICE_PLATFORM", "android")
+platform = os.environ.get("DOGU_DEVICE_PLATFORM", "LOCAL_DEVICE_PLATFORM")
 is_ci = os.environ.get("CI", "false") == "true"
-automationName = platform == "android" and "UiAutomator2" or "XCUITest"
+automationName = "UiAutomator2" if platform == "android" else "XCUITest"
 
 
 @pytest.fixture(scope="session")
@@ -37,7 +37,7 @@ def driver(device: DeviceClient):
         {
             "platformName": platform,
             "deviceName": serial,
-            "automationName": "UiAutomator2",
+            "automationName": automationName,
             "newCommandTimeout": 1800,
         }
     )
