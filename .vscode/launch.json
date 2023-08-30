@@ -9,7 +9,7 @@
       "type": "python",
       "request": "launch",
       "module": "pytest",
-      "justMyCode": true,
+      "justMyCode": false,
       "args": [
         "--capture=no",
         "--rootdir=${workspaceFolder}/gamium/python/pytest",

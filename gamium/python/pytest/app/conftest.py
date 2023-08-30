@@ -7,13 +7,10 @@ from dogu.device import DeviceClient, DeviceHostClient
 from gamium import *
 
 localhost = "127.0.0.1"
-serial = os.environ.get("DOGU_DEVICE_SERIAL", "LOCAL_DEVICE_SERIAL")
+is_ci = os.environ.get("CI", "false") == "true"
+serial = os.environ.get("DOGU_DEVICE_SERIAL", "YOUR_LOCAL_DEVICE_SERIAL")
 device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
 device_gamium_server_port = 50061
-
-platform = os.environ.get("DOGU_DEVICE_PLATFORM", "LOCAL_DEVICE_PLATFORM")
-is_ci = os.environ.get("CI", "false") == "true"
-automationName = "UiAutomator2" if platform == "android" else "XCUITest"
 
 pytest_plugins = ["pytest_dogu_report"]
 
@@ -33,19 +30,17 @@ def host():
 def driver(device: DeviceClient):
     print("setup driver")
     appium_server = device.run_appium_server(serial)
-
+    capabilites = device.get_appium_capabilities(serial)
     options = AppiumOptions().load_capabilities(
         {
-            "platformName": platform,
-            "udid": serial,
-            "automationName": automationName,
-            "newCommandTimeout": 1800,
+            **capabilites,
+            "appium:newCommandTimeout": 1800,
         }
     )
     if not is_ci:
-        options.set_capability("app", "LOCAL_APP_PATH")
-
+        options.set_capability("app", "YOUR_LOCAL_APP_PATH")
     driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
+
     yield driver
 
     print("teardown driver")
@@ -56,17 +51,15 @@ def driver(device: DeviceClient):
 @pytest.fixture(scope="session")
 def gamium(driver: WebDriver, host: DeviceHostClient, device: DeviceClient):
     print("setup gamium")
-
     host_port = host.get_free_port()
     forward_closer = device.forward(serial, host_port, device_gamium_server_port)
-    service = TcpGamiumService(localhost, host_port, 10000)
+    service = TcpGamiumService(localhost, host_port, 30)
     gamium = GamiumClient(service)
     gamium.connect()
 
     yield gamium
 
     print("teardown gamium")
-
     gamium.sleep(4000)
     gamium.actions().app_quit().perform()
     forward_closer.close()
