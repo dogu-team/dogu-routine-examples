@@ -5,6 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: appium",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "justMyCode": false,
+      "args": [
+        "--capture=no",
+        "--rootdir=${workspaceFolder}/appium/python/pytest",
+        "${workspaceFolder}/appium/python/pytest/app/test_android.py"
+      ]
+    },
+    {
       "name": "Python: gamium",
       "type": "python",
       "request": "launch",
