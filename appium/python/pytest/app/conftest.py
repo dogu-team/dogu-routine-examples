@@ -2,7 +2,9 @@ import pytest
 import os
 from appium.webdriver import Remote
 from appium.options.common import AppiumOptions
-from dogu.device import DeviceClient, DeviceHostClient
+from dogu.device.device_client import DeviceClient
+from dogu.device.device_host_client import DeviceHostClient
+from dogu.device.appium_server import AppiumServerContext
 
 localhost = "127.0.0.1"
 is_ci = os.environ.get("CI", "false") == "true"
@@ -25,9 +27,19 @@ def host():
 
 
 @pytest.fixture(scope="session")
-def driver(device: DeviceClient):
-    print("setup driver")
+def appium_server(device: DeviceClient):
+    print("setup appium_server")
     appium_server = device.run_appium_server(serial)
+
+    yield appium_server
+
+    print("teardown appium_server")
+    appium_server.close()
+
+
+@pytest.fixture(scope="session")
+def driver(appium_server: AppiumServerContext, device: DeviceClient):
+    print("setup driver")
     capabilites = device.get_appium_capabilities(serial)
     options = AppiumOptions().load_capabilities(
         {
@@ -43,5 +55,4 @@ def driver(device: DeviceClient):
 
     print("teardown driver")
     driver.quit()
-    appium_server.close()
 
