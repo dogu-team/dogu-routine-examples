@@ -9,8 +9,8 @@ from dogu.device.appium_server import AppiumServerContext
 from gamium import *
 
 localhost = "127.0.0.1"
-is_ci = os.environ.get("CI", "false") == "true"
 serial = os.environ.get("DOGU_DEVICE_SERIAL", "YOUR_LOCAL_DEVICE_SERIAL")
+app_path = os.environ.get("DOGU_APP_PATH", "YOUR_LOCAL_APP_PATH")
 device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
 device_gamium_server_port = 50061
 
@@ -46,10 +46,9 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient):
     options = AppiumOptions().load_capabilities(
         {
             **capabilites,
+            "appium:app": app_path
         }
     )
-    if not is_ci:
-        options.set_capability("app", "YOUR_LOCAL_APP_PATH")
     driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
 
     yield driver
