@@ -2,24 +2,20 @@ import { beforeAll, afterAll } from "@jest/globals";
 import { DeviceClient, AppiumServerContext } from "dogu-device-client";
 import { remote, RemoteOptions } from "webdriverio";
 
-const isCi = process.env["CI"] === "true";
-export const serial =
-  process.env["DOGU_DEVICE_SERIAL"] ?? "YOUR_LOCAL_DEVICE_SERIAL";
-const deviceServerPort = parseInt(
+const IsCI = process.env["CI"] === "true";
+const Serial = process.env["DOGU_DEVICE_SERIAL"] ?? "YOUR_LOCAL_DEVICE_SERIAL";
+const DeviceServerPort = parseInt(
   process.env["DOGU_DEVICE_SERVER_PORT"] ?? "5001"
 );
 
-declare global {
-  var driver: WebdriverIO.Browser;
-}
-
+export let driver: WebdriverIO.Browser;
 let server: AppiumServerContext | undefined;
 
 beforeAll(async () => {
-  const device = new DeviceClient({ port: deviceServerPort });
-  server = await device.runAppiumServer(serial);
-  const caps = await device.getAppiumCapabilities(serial);
-  if (!isCi) {
+  const device = new DeviceClient({ port: DeviceServerPort });
+  server = await device.runAppiumServer(Serial);
+  const caps = await device.getAppiumCapabilities(Serial);
+  if (!IsCI) {
     caps["appium:app"] = "YOUR_LOCAL_APP_PATH";
   }
 
@@ -33,13 +29,10 @@ beforeAll(async () => {
     capabilities: caps,
   };
 
-  const driver = await remote(options);
-  global.driver = driver;
+  driver = await remote(options);
 });
 
 afterAll(async () => {
-  const driver = global.driver;
-  Reflect.deleteProperty(global, "driver");
   await driver.deleteSession();
   await server?.close();
 });

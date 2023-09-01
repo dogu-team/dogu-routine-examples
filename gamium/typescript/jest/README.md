@@ -1,4 +1,4 @@
-# webdriverio/typescript/jest
+# gamium/typescript/jest
 
 # Requirements
 
@@ -13,5 +13,5 @@ npm install
 # Run tests
 
 ```sh
-npm run test:app:android
+npm run test:app
 ```

@@ -46,7 +46,6 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient):
     options = AppiumOptions().load_capabilities(
         {
             **capabilites,
-            "appium:newCommandTimeout": 1800,
         }
     )
     if not is_ci:
