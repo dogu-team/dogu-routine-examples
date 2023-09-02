@@ -1,5 +1,6 @@
 import pytest
 import os
+from pathlib import Path
 from appium.webdriver import Remote
 from appium.webdriver.webdriver import WebDriver
 from appium.options.common import AppiumOptions
@@ -7,12 +8,20 @@ from dogu.device.device_client import DeviceClient
 from dogu.device.device_host_client import DeviceHostClient
 from dogu.device.appium_server import AppiumServerContext
 from gamium import *
+from dotenv import load_dotenv
+
+load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
 localhost = "127.0.0.1"
-serial = os.environ.get("DOGU_DEVICE_SERIAL", "YOUR_LOCAL_DEVICE_SERIAL")
-app_path = os.environ.get("DOGU_APP_PATH", "YOUR_LOCAL_APP_PATH")
+serial = os.environ.get("DOGU_DEVICE_SERIAL")
+app_path = os.environ.get("DOGU_APP_PATH")
 device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
 device_gamium_server_port = 50061
+
+if serial is None:
+    raise Exception("DOGU_DEVICE_SERIAL is not set")
+if app_path is None:
+    raise Exception("DOGU_APP_PATH is not set")
 
 pytest_plugins = ["pytest_dogu_report"]
 

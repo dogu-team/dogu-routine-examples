@@ -1,12 +1,23 @@
 import { beforeAll, afterAll } from "@jest/globals";
 import { DeviceClient, AppiumServerContext } from "dogu-device-client";
 import { remote, RemoteOptions } from "webdriverio";
+import { config } from "dotenv";
 
-const Serial = process.env["DOGU_DEVICE_SERIAL"] ?? "YOUR_LOCAL_DEVICE_SERIAL";
-const AppPath = process.env["DOGU_APP_PATH"] ?? "YOUR_LOCAL_APP_PATH";
+config({ path: ".env.local" });
+
+const Serial = process.env["DOGU_DEVICE_SERIAL"];
+const AppPath = process.env["DOGU_APP_PATH"];
 const DeviceServerPort = parseInt(
   process.env["DOGU_DEVICE_SERVER_PORT"] ?? "5001"
 );
+
+if (!Serial) {
+  throw new Error("DOGU_DEVICE_SERIAL is not specified");
+}
+
+if (!AppPath) {
+  throw new Error("DOGU_APP_PATH is not specified");
+}
 
 export let driver: WebdriverIO.Browser;
 let server: AppiumServerContext | undefined;
