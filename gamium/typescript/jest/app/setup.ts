@@ -8,13 +8,25 @@ import {
 import { remote, RemoteOptions } from "webdriverio";
 import { GamiumClient, NodeGamiumService, UI } from "gamium";
 
+import { config } from "dotenv";
+
+config({ path: ".env.local" });
+
 const Localhost = "127.0.0.1";
-const Serial = process.env["DOGU_DEVICE_SERIAL"] ?? "YOUR_LOCAL_DEVICE_SERIAL";
-const AppPath = process.env["DOGU_APP_PATH"] ?? "YOUR_LOCAL_APP_PATH";
+const Serial = process.env["DOGU_DEVICE_SERIAL"];
+const AppPath = process.env["DOGU_APP_PATH"];
 const DeviceServerPort = parseInt(
   process.env["DOGU_DEVICE_SERVER_PORT"] ?? "5001"
 );
 const DeviceGamiumServerPort = 50061;
+
+if (!Serial) {
+  throw new Error("DOGU_DEVICE_SERIAL is not specified");
+}
+
+if (!AppPath) {
+  throw new Error("DOGU_APP_PATH is not specified");
+}
 
 export let driver: WebdriverIO.Browser;
 export let gamium: GamiumClient;

@@ -13,3 +13,5 @@ __pycache__
 
 # playwright
 test-results
+
+.env.local

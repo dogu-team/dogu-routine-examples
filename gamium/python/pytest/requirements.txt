@@ -4,3 +4,4 @@ pytest-dogu-report==1.0.1
 pytest==7.4.0
 gamium==2.0.7
 dogu-device-client==0.0.5
+python-dotenv==1.0.0
