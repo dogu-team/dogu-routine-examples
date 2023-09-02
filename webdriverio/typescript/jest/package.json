@@ -10,7 +10,7 @@
   "author": "Dogu Technologies",
   "license": "ISC",
   "devDependencies": {
-    "@dogu-tech/jest-environment": "^1.1.4-rc.1",
+    "@dogu-tech/jest-environment": "^1.1.4",
     "@jest/globals": "29.6.0",
     "@jest/types": "29.6.0",
     "cross-env": "7.0.3",

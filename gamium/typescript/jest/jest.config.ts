@@ -5,6 +5,7 @@ const config: JestConfigWithTsJest = {
   verbose: true,
   bail: true,
   testTimeout: 300_000,
+  testEnvironment: "@dogu-tech/jest-environment",
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
