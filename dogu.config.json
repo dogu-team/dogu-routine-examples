@@ -1,0 +1,3 @@
+{
+  "workingDirPaths": ["appium/python/pytest", "selenium/python/pytest", "webdriverio/typescript/jest", "gamium/python/pytest", "gamium/typescript/jest"]
+}
