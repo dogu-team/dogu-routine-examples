@@ -51,6 +51,8 @@ beforeAll(async () => {
   };
 
   driver = await remote(options);
+  await driver.dismissAlert().catch(() => {});
+  await driver.acceptAlert().catch(() => {});
 
   const host = new DeviceHostClient({ port: DeviceServerPort });
   const gamiumHostPort = await host.getFreePort();
