@@ -39,6 +39,8 @@ beforeAll(async () => {
   };
 
   driver = await remote(options);
+  await driver.dismissAlert().catch(() => {});
+  await driver.acceptAlert().catch(() => {});
 });
 
 afterAll(async () => {

@@ -58,6 +58,18 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient):
     )
     driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
 
+    try:
+        alert = driver.switch_to.alert
+        alert.dismiss()
+    except:
+        pass
+    try:
+        alert = driver.switch_to.alert
+        alert.accept()
+    except:
+        pass
+    driver.switch_to.context("NATIVE_APP")
+
     yield driver
 
     print("teardown driver")

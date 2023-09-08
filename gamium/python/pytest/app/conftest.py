@@ -59,6 +59,7 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient):
         }
     )
     driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
+
     try:
         alert = driver.switch_to.alert
         alert.dismiss()
