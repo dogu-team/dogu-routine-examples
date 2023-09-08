@@ -1,0 +1,11 @@
+{
+  "terminal.integrated.env.osx": {
+    "PYTHONPATH": "/Users/dogu/repo/dogu/packages/python/dogu-device-client:$PYTHONPATH"
+  },
+  "python.autoComplete.extraPaths": [
+    "/Users/dogu/repo/dogu/packages/python/dogu-device-client"
+  ],
+  "python.analysis.extraPaths": [
+    "/Users/dogu/repo/dogu/packages/python/dogu-device-client"
+  ]
+}
