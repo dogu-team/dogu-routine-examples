@@ -37,7 +37,7 @@ def device():
 
 @pytest.fixture(scope="session")
 def host():
-    host_client = DeviceHostClient(localhost, device_server_port, 30)
+    host_client = DeviceHostClient(localhost, device_server_port, 10 * 60)
     yield host_client
 
 
