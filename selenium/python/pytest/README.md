@@ -30,5 +30,5 @@ pip3 install -r requirements.txt
 ### Desktop web test
 
 ```shell
-pytest web/test_web.py
+pytest web/test_web.py --capture=no -x
 ```

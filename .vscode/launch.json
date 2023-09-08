@@ -27,6 +27,18 @@
         "--rootdir=${workspaceFolder}/gamium/python/pytest",
         "${workspaceFolder}/gamium/python/pytest/app/test_dogurpgsample.py"
       ]
-    }
+    },
+    {
+      "name": "Python: selenium",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "justMyCode": true,
+      "cwd": "${workspaceFolder}/selenium/python/pytest",
+      "args": [
+        "--capture=no",
+        "web/test_web.py"
+      ]
+    },
   ]
 }
