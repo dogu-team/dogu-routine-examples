@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:app:android": "cross-env NODE_OPTIONS=\"--experimental-vm-modules $NODE_OPTIONS\" jest app/android.test.ts --setupFilesAfterEnv ./app/setup.android.ts --runInBand"
+    "test:app:android": "cross-env NODE_OPTIONS=\"--experimental-vm-modules $NODE_OPTIONS\" jest app/android.test.ts --setupFilesAfterEnv ./app/setup.ts --runInBand",
+    "test:app:ios": "cross-env NODE_OPTIONS=\"--experimental-vm-modules $NODE_OPTIONS\" jest app/ios.test.ts --setupFilesAfterEnv ./app/setup.ts --runInBand"
   },
   "keywords": [],
   "author": "Dogu Technologies",

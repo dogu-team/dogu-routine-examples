@@ -1,5 +1,5 @@
 import { test, expect } from "@jest/globals";
-import { driver } from "./setup.android.js";
+import { driver } from "./setup.js";
 
 test("find and click wikipedia", async () => {
   const searchSelector = await driver.$("~Search Wikipedia");
