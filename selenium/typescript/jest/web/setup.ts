@@ -97,7 +97,7 @@ beforeAll(async () => {
   } else {
     throw new Error(`unsupported browser: ${browserName}`);
   }
-});
+}, 10 * 60_000);
 
 afterAll(async () => {
   await driver?.close();
