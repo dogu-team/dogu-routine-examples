@@ -1,7 +1,7 @@
 {
   "name": "@dogu-routine-examples/gamium-typescript-jest",
   "version": "1.0.0",
-  "description": "",
+  "description": "Gamium example project with typescript and jest",
   "main": "index.js",
   "scripts": {
     "test:app": "cross-env NODE_OPTIONS=\"--experimental-vm-modules $NODE_OPTIONS\" jest app/dogurpgsample.test.ts --setupFilesAfterEnv ./app/setup.ts --runInBand"
