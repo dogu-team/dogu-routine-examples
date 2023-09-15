@@ -1,7 +1,7 @@
 {
   "name": "@dogu-routine-examples/selenium-typescript-jest",
   "version": "0.0.0",
-  "description": "",
+  "description": "Selenium TypeScript Jest Example",
   "main": "index.js",
   "scripts": {
     "test:web": "cross-env NODE_OPTIONS=\"--experimental-vm-modules $NODE_OPTIONS\" jest web/web.test.ts --setupFilesAfterEnv ./web/setup.ts --runInBand"
