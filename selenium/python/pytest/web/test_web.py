@@ -1,6 +1,7 @@
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+import time
 
 
 def test_go_to_dogutech_io(driver: WebDriver):
@@ -13,7 +14,7 @@ def test_find_element_dogu(driver: WebDriver):
 
 def test_scolls(driver: WebDriver):
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-    ActionChains(driver).pause(3).perform()
+    time.sleep(3)
 
     driver.execute_script("window.scrollTo(0, 0)")
-    ActionChains(driver).pause(3).perform()
+    time.sleep(3)
