@@ -15,3 +15,11 @@ test("find Dogu elements", async () => {
   });
   expect(doguElements.length).toBeGreaterThan(0);
 });
+
+test("scroll pages", async () => {
+  await driver.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+  await driver.actions().pause(3000).perform();
+
+  await driver.executeScript("window.scrollTo(0, 0)");
+  await driver.actions().pause(3000).perform();
+});
