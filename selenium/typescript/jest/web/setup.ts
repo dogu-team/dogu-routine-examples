@@ -65,7 +65,7 @@ beforeAll(async () => {
     const chromeServiceBuilder = new chrome.ServiceBuilder(browserDriverPath);
     const chromeOptions = new chrome.Options();
     chromeOptions.setChromeBinaryPath(browserPath);
-    chromeOptions.addArguments("window-size=1440,3088");
+    chromeOptions.addArguments("window-size=360,772");
     driver = new webdriver.Builder()
       .forBrowser("chrome")
       .setChromeOptions(chromeOptions)
