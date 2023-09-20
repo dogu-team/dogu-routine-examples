@@ -65,6 +65,8 @@ beforeAll(async () => {
     const chromeServiceBuilder = new chrome.ServiceBuilder(browserDriverPath);
     const chromeOptions = new chrome.Options();
     chromeOptions.setChromeBinaryPath(browserPath);
+    chromeOptions.addArguments("headless");
+    chromeOptions.addArguments("window-size=1920,1080");
     driver = new webdriver.Builder()
       .forBrowser("chrome")
       .setChromeOptions(chromeOptions)
