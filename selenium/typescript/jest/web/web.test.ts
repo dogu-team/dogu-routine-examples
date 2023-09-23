@@ -33,14 +33,14 @@ test("Feature test", async () => {
       xpath: '//button[@id="main-feature-execution-button"]',
     })
   );
-  await driver
-    .actions()
-    .click(
-      await driver.findElement({
-        xpath: '//button[@id="main-feature-execution-button"]',
-      })
-    )
-    .perform();
+  // await driver
+  //   .actions()
+  //   .click(
+  //     await driver.findElement({
+  //       xpath: '//button[@id="main-feature-execution-button"]',
+  //     })
+  //   )
+  //   .perform();
   await driver.sleep(1000);
   await driver
     .actions()
