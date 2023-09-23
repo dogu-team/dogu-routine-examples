@@ -63,6 +63,7 @@ test("find Dogu elements", async () => {
 // });
 
 test("demo test", async () => {
+  await driver.sleep(5000);
   await driver
     .actions()
     .click(
