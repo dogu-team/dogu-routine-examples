@@ -16,54 +16,61 @@ test("find Dogu elements", async () => {
   expect(doguElements.length).toBeGreaterThan(0);
 });
 
-test("Feature test", async () => {
-  await driver
-    .actions()
-    .click(
-      await driver.findElement({
-        xpath: '//button[@id="header-book-demo-button"]',
-      })
-    )
-    .perform();
-  await driver.sleep(1000);
-  // scroll to button
-  await driver.executeScript(
-    "arguments[0].scrollIntoView();",
-    await driver.findElement({
-      xpath: '//button[@id="main-feature-execution-button"]',
-    })
-  );
-  // await driver
-  //   .actions()
-  //   .click(
-  //     await driver.findElement({
-  //       xpath: '//button[@id="main-feature-execution-button"]',
-  //     })
-  //   )
-  //   .perform();
-  await driver.sleep(1000);
-  await driver
-    .actions()
-    .click(
-      await driver.findElement({
-        xpath: '//button[@id="main-feature-report-button"]',
-      })
-    )
-    .perform();
-  await driver.sleep(1000);
-  await driver
-    .actions()
-    .click(
-      await driver.findElement({
-        xpath: '//button[@id="main-feature-integration-button"]',
-      })
-    )
-    .perform();
-  await driver.sleep(1000);
-});
+// test("Feature test", async () => {
+//   await driver
+//     .actions()
+//     .click(
+//       await driver.findElement({
+//         xpath: '//button[@id="header-book-demo-button"]',
+//       })
+//     )
+//     .perform();
+//   await driver.sleep(1000);
+//   // scroll to button
+//   await driver.executeScript(
+//     "arguments[0].scrollIntoView();",
+//     await driver.findElement({
+//       xpath: '//button[@id="main-feature-execution-button"]',
+//     })
+//   );
+//   await driver
+//     .actions()
+//     .click(
+//       await driver.findElement({
+//         xpath: '//button[@id="main-feature-execution-button"]',
+//       })
+//     )
+//     .perform();
+//   await driver.sleep(1000);
+//   await driver
+//     .actions()
+//     .click(
+//       await driver.findElement({
+//         xpath: '//button[@id="main-feature-report-button"]',
+//       })
+//     )
+//     .perform();
+//   await driver.sleep(1000);
+//   await driver
+//     .actions()
+//     .click(
+//       await driver.findElement({
+//         xpath: '//button[@id="main-feature-integration-button"]',
+//       })
+//     )
+//     .perform();
+//   await driver.sleep(1000);
+// });
 
 test("demo test", async () => {
-  // await driver.actions().click(await driver.findElement({xpath: '//button[@id="main-bottom-book-demo-button"]'})).perform();
+  await driver
+    .actions()
+    .click(
+      await driver.findElement({
+        xpath: '//button[@id="main-book-demo-button"]',
+      })
+    )
+    .perform();
   await driver.sleep(1000);
   await driver
     .actions()
