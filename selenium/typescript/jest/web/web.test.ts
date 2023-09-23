@@ -67,7 +67,7 @@ test("demo test", async () => {
     .actions()
     .click(
       await driver.findElement({
-        xpath: '//button[@id="main-book-demo-button"]',
+        xpath: '//button[@id="header-book-demo-button"]',
       })
     )
     .perform();
