@@ -65,6 +65,7 @@ beforeAll(async () => {
     const chromeServiceBuilder = new chrome.ServiceBuilder(browserDriverPath);
     const chromeOptions = new chrome.Options();
     chromeOptions.setChromeBinaryPath(browserPath);
+    chromeOptions.addArguments("--window-size=1920,1080");
     driver = new webdriver.Builder()
       .forBrowser("chrome")
       .setChromeOptions(chromeOptions)
@@ -74,6 +75,8 @@ beforeAll(async () => {
     const firefoxServiceBuilder = new firefox.ServiceBuilder(browserDriverPath);
     const firefoxOptions = new firefox.Options();
     firefoxOptions.setBinary(browserPath);
+    firefoxOptions.addArguments("-width=1920");
+    firefoxOptions.addArguments("-height=1080");
     driver = new webdriver.Builder()
       .forBrowser("firefox")
       .setFirefoxOptions(firefoxOptions)
@@ -83,6 +86,7 @@ beforeAll(async () => {
     const edgeServiceBuilder = new edge.ServiceBuilder(browserDriverPath);
     const edgeOptions = new edge.Options();
     edgeOptions.setEdgeChromiumBinaryPath(browserPath);
+    edgeOptions.addArguments("--window-size=1920,1080");
     driver = new webdriver.Builder()
       .forBrowser("MicrosoftEdge")
       .setEdgeOptions(edgeOptions)
@@ -94,6 +98,7 @@ beforeAll(async () => {
       .forBrowser("safari")
       .setSafariOptions(safariOptions)
       .build();
+    driver.manage().window().setRect({ width: 1920, height: 1080 });
   } else {
     throw new Error(`unsupported browser: ${browserName}`);
   }
