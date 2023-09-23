@@ -17,6 +17,7 @@ test("find Dogu elements", async () => {
 });
 
 test("scroll pages", async () => {
+  await driver.sleep(10000);
   await driver.executeScript("window.scrollTo(0, document.body.scrollHeight)");
   await driver.sleep(3000);
 
