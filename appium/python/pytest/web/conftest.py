@@ -68,7 +68,9 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
     options = AppiumOptions().load_capabilities(
         {
             **capabilites,
-            "appium:appPackage": ensure_browser_result.browserPackageName
+            "appium:appPackage": ensure_browser_result.browserPackageName,
+            "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
+            "appium:showChromedriverLog": True,
         }
     )
     driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
@@ -83,7 +85,6 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         alert.accept()
     except:
         pass
-    driver.switch_to.context("NATIVE_APP")
 
     yield driver
 
