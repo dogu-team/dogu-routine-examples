@@ -67,18 +67,16 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
     print("setup driver")
     capabilites = device.get_appium_capabilities(device_serial)
 
+    options = AppiumOptions().load_capabilities({
+        **capabilites,
+        "browserName": ensure_browser_result.browserName,
+        "appium:enforceXPath1": True,
+    })
+
     if ensure_browser_result.browserName == "chrome":
-        options = AppiumOptions().load_capabilities(
-            {
-                **capabilites,
-                "browserName": ensure_browser_result.browserName,
-                "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
-                "appium:adbExecTimeout": 60 * 1000,
-                "appium:enforceXPath1": True,
-            }
-        )
-    else:
-        raise Exception(f"unsupported browser {ensure_browser_result.browserName}")
+        options.set_capability("appium:chromedriverExecutable", ensure_browser_result.browserDriverPath)
+        if device_platform == "android":
+            options.set_capability("appium:adbExecTimeout", 60 * 1000)
 
     driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
 
@@ -94,13 +92,13 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         pass
 
     if ensure_browser_result.browserName == "chrome":
-        driver.execute_script("mobile: shell", {
-            "command": "echo",
-            "args": ["chrome --disable-fre --no-default-browser-check --no-first-run", ">", "/data/local/tmp/chrome-command-line"]
-        })
+        if device_platform == "android":
+            driver.execute_script("mobile: shell", {
+                "command": "echo",
+                "args": ["chrome --disable-fre --no-default-browser-check --no-first-run", ">", "/data/local/tmp/chrome-command-line"]
+            })
 
     yield driver
 
     print("teardown driver")
     driver.quit()
-
