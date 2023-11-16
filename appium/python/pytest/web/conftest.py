@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from appium.webdriver import Remote
 from appium.options.common import AppiumOptions
+from appium.webdriver.common.appiumby import AppiumBy
 from dogu.device.device_client import DeviceClient
 from dogu.device.device_host_client import DeviceHostClient, EnsureBrowserAndDriverOptions, EnsureBrowserAndDriverResult
 from dogu.device.appium_server import AppiumServerContext
@@ -97,6 +98,17 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         alert.accept()
     except:
         pass
+
+    if ensure_browser_result.browserName == "chrome":
+        context = driver.context
+        driver.switch_to.context("NATIVE_APP")
+        terms_accepts = driver.find_elements(AppiumBy.ID, "com.android.chrome:id/terms_accept")
+        if len(terms_accepts) > 0:
+            terms_accepts[0].click()
+        negative_buttons = driver.find_elements(AppiumBy.ID, "com.android.chrome:id/negative_button")
+        if len(negative_buttons) > 0:
+            negative_buttons[0].click()
+        driver.switch_to.context(context)
 
     yield driver
 
