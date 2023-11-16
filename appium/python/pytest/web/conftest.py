@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 from appium.webdriver import Remote
 from appium.options.common import AppiumOptions
-from appium.webdriver.common.appiumby import AppiumBy
 from dogu.device.device_client import DeviceClient
 from dogu.device.device_host_client import DeviceHostClient, EnsureBrowserAndDriverOptions, EnsureBrowserAndDriverResult
 from dogu.device.appium_server import AppiumServerContext
@@ -71,10 +70,10 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         options = AppiumOptions().load_capabilities(
             {
                 **capabilites,
-                "appium:appPackage": "com.android.chrome",
-                "appium:appActivity": "com.google.android.apps.chrome.Main",
+                "browserName": ensure_browser_result.browserName,
                 "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
-                "appium:showChromedriverLog": True,
+                "appium:adbExecTimeout": 60 * 1000,
+                "appium:enforceXPath1": True,
             }
         )
     else:
@@ -92,12 +91,6 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         alert.accept()
     except:
         pass
-
-    if ensure_browser_result.browserName == "chrome":
-        driver.execute_script("mobile: shell", {
-            "command": "echo",
-            "args": ["chrome --disable-fre --no-default-browser-check --no-first-run", ">", "/data/local/tmp/chrome-command-line"]
-        })
 
     yield driver
 
