@@ -65,6 +65,7 @@ def ensure_browser_result(host: DeviceHostClient):
 def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_browser_result: EnsureBrowserAndDriverResult):
     print("setup driver")
     capabilites = device.get_appium_capabilities(device_serial)
+
     if ensure_browser_result.browserName == "chrome":
         options = AppiumOptions().load_capabilities(
             {
