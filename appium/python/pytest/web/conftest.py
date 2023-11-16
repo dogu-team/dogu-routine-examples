@@ -75,12 +75,6 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
                 "appium:appActivity": "com.google.android.apps.chrome.Main",
                 "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
                 "appium:showChromedriverLog": True,
-                "appium:chromeOptions": {
-                    "args": ["--disable-fre", "--no-default-browser-check", "--no-first-run"]
-                },
-                "goog:chromeOptions": {
-                    "args": ["--disable-fre", "--no-default-browser-check", "--no-first-run"]
-                }
             }
         )
     else:
@@ -100,15 +94,10 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         pass
 
     if ensure_browser_result.browserName == "chrome":
-        context = driver.context
-        driver.switch_to.context("NATIVE_APP")
-        terms_accepts = driver.find_elements(AppiumBy.ID, "com.android.chrome:id/terms_accept")
-        if len(terms_accepts) > 0:
-            terms_accepts[0].click()
-        negative_buttons = driver.find_elements(AppiumBy.ID, "com.android.chrome:id/negative_button")
-        if len(negative_buttons) > 0:
-            negative_buttons[0].click()
-        driver.switch_to.context(context)
+        driver.execute_script("mobile: shell", {
+            "command": "echo",
+            "args": ["chrome --disable-fre --no-default-browser-check --no-first-run", ">", "/data/local/tmp/chrome-command-line"]
+        })
 
     yield driver
 
