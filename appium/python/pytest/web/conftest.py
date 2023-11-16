@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from appium.webdriver import Remote
 from appium.options.common import AppiumOptions
+from appium.webdriver.common.appiumby import AppiumBy
 from dogu.device.device_client import DeviceClient
 from dogu.device.device_host_client import DeviceHostClient, EnsureBrowserAndDriverOptions, EnsureBrowserAndDriverResult
 from dogu.device.appium_server import AppiumServerContext
@@ -91,6 +92,16 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         alert.accept()
     except:
         pass
+
+    if ensure_browser_result.browserName == "chrome":
+        driver.execute_script("mobile: shell", {
+            "command": "echo",
+            "args": ["chrome --disable-fre --no-default-browser-check --no-first-run", ">", "/data/local/tmp/chrome-command-line"]
+        })
+        driver.execute_script("mobile: shell", {
+            "command": "am",
+            "args": ["set-debug-app", "--persistent", "com.android.chrome"]
+        })
 
     yield driver
 
