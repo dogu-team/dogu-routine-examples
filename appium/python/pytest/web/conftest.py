@@ -98,10 +98,10 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
             "command": "echo",
             "args": ["chrome --disable-fre --no-default-browser-check --no-first-run", ">", "/data/local/tmp/chrome-command-line"]
         })
-        driver.execute_script("mobile: shell", {
-            "command": "am",
-            "args": ["set-debug-app", "--persistent", "com.android.chrome"]
-        })
+        # driver.execute_script("mobile: shell", {
+        #     "command": "am",
+        #     "args": ["set-debug-app", "--persistent", "com.android.chrome"]
+        # })
 
     yield driver
 
