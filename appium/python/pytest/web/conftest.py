@@ -70,7 +70,8 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         options = AppiumOptions().load_capabilities(
             {
                 **capabilites,
-                "appium:appPackage": ensure_browser_result.browserPackageName,
+                "appium:appPackage": "com.android.chrome",
+                "appium:appActivity": "org.chromium.chrome.browser.ChromeTabbedActivity",
                 "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
                 "appium:showChromedriverLog": True,
             }
