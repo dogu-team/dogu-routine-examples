@@ -74,6 +74,9 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
                 "appium:appActivity": "com.google.android.apps.chrome.Main",
                 "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
                 "appium:showChromedriverLog": True,
+                'chromeOptions': {
+                    'args': ['--disable-fre']
+                }
             }
         )
     else:
