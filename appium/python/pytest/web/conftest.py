@@ -76,6 +76,9 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
                 "appium:showChromedriverLog": True,
                 "appium:chromeOptions": {
                     "args": ["--disable-fre", "--no-default-browser-check", "--no-first-run"]
+                },
+                "goog:chromeOptions": {
+                    "args": ["--disable-fre", "--no-default-browser-check", "--no-first-run"]
                 }
             }
         )
