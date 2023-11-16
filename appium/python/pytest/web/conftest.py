@@ -65,14 +65,18 @@ def ensure_browser_result(host: DeviceHostClient):
 def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_browser_result: EnsureBrowserAndDriverResult):
     print("setup driver")
     capabilites = device.get_appium_capabilities(device_serial)
-    options = AppiumOptions().load_capabilities(
-        {
-            **capabilites,
-            "appium:appPackage": ensure_browser_result.browserPackageName,
-            "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
-            "appium:showChromedriverLog": True,
-        }
-    )
+    if ensure_browser_result.browserName == "chrome":
+        options = AppiumOptions().load_capabilities(
+            {
+                **capabilites,
+                "appium:appPackage": ensure_browser_result.browserPackageName,
+                "appium:chromedriverExecutable": ensure_browser_result.browserDriverPath,
+                "appium:showChromedriverLog": True,
+            }
+        )
+    else:
+        raise Exception(f"unsupported browser {ensure_browser_result.browserName}")
+
     driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
 
     try:
