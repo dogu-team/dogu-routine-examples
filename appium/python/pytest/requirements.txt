@@ -3,4 +3,4 @@ selenium==4.15.2
 python-dotenv==1.0.0
 dogu-device-client==1.0.0
 pytest==7.4.3
-pytest-dogu-sdk==1.0.5rc3
+pytest-dogu-sdk==1.0.5rc4
