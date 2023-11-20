@@ -21,7 +21,7 @@ if serial is None:
 if app_path is None:
     raise Exception("DOGU_APP_PATH is not set")
 
-pytest_plugins = ["pytest_dogu_report"]
+pytest_plugins = ["pytest_dogu_sdk"]
 
 @pytest.fixture(scope="session")
 def device():
