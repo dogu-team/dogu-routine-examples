@@ -23,7 +23,7 @@ if device_serial is None:
 if browser_name is None:
     raise Exception("DOGU_BROWSER_NAME is not set")
 
-pytest_plugins = ["pytest_dogu_report"]
+pytest_plugins = ["pytest_dogu_sdk"]
 
 
 @pytest.fixture(scope="session")
