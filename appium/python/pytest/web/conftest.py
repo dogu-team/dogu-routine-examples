@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import pytest
 import os
 from pathlib import Path
@@ -13,8 +14,7 @@ load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
 device_serial = os.environ.get("DOGU_DEVICE_SERIAL")
 device_platform = os.environ.get("DOGU_DEVICE_PLATFORM")
-device_server_host = os.environ.get("DOGU_DEVICE_SERVER_HOST", "127.0.0.1")
-device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
+device_server_url = os.environ.get("DOGU_DEVICE_SERVER_URL", "http://127.0.0.1:5001")
 browser_name = os.environ.get("DOGU_BROWSER_NAME")
 browser_version = os.environ.get("DOGU_BROWSER_VERSION", "latest")
 
@@ -28,13 +28,13 @@ pytest_plugins = ["pytest_dogu_sdk"]
 
 @pytest.fixture(scope="session")
 def device():
-    device_client = DeviceClient(device_server_host, device_server_port, 30)
+    device_client = DeviceClient(device_server_url, 30)
     yield device_client
 
 
 @pytest.fixture(scope="session")
 def host():
-    host_client = DeviceHostClient(device_server_host, device_server_port, 30)
+    host_client = DeviceHostClient(device_server_url, 30)
     yield host_client
 
 
@@ -78,7 +78,8 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
         if device_platform == "android":
             options.set_capability("appium:adbExecTimeout", 60 * 1000)
 
-    driver = Remote(f"http://{device_server_host}:{appium_server.port}", options=options)
+    parsed = urlparse(device_server_url)
+    driver = Remote(f"${parsed.scheme}://{parsed.hostname}:{appium_server.port}", options=options)
 
     try:
         alert = driver.switch_to.alert
