@@ -14,9 +14,9 @@ from selenium.webdriver.safari.service import Service as SafariService
 
 load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
-localhost = "127.0.0.1"
 device_serial = os.environ.get("DOGU_DEVICE_SERIAL")
 device_platform = os.environ.get("DOGU_DEVICE_PLATFORM")
+device_server_host = os.environ.get("DOGU_DEVICE_SERVER_HOST", "127.0.0.1")
 device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
 browser_name = os.environ.get("DOGU_BROWSER_NAME")
 browser_version = os.environ.get("DOGU_BROWSER_VERSION", "latest")
@@ -31,13 +31,13 @@ pytest_plugins = ["pytest_dogu_sdk"]
 
 @pytest.fixture(scope="session")
 def device():
-    device_client = DeviceClient(localhost, device_server_port, 30)
+    device_client = DeviceClient(device_server_host, device_server_port, 30)
     yield device_client
 
 
 @pytest.fixture(scope="session")
 def host():
-    host_client = DeviceHostClient(localhost, device_server_port, 10 * 60)
+    host_client = DeviceHostClient(device_server_host, device_server_port, 10 * 60)
     yield host_client
 
 
