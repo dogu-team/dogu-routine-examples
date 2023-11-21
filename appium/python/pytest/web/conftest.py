@@ -79,7 +79,7 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient, ensure_brow
             options.set_capability("appium:adbExecTimeout", 60 * 1000)
 
     parsed = urlparse(device_server_url)
-    driver = Remote(f"${parsed.scheme}://{parsed.hostname}:{appium_server.port}", options=options)
+    driver = Remote(f"{parsed.scheme}://{parsed.hostname}:{appium_server.port}", options=options)
 
     try:
         alert = driver.switch_to.alert

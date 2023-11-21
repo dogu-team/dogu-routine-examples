@@ -59,7 +59,7 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient):
         }
     )
     parsed = urlparse(device_server_url)
-    driver = Remote(f"${parsed.scheme}://{parsed.hostname}:{appium_server.port}", options=options)
+    driver = Remote(f"{parsed.scheme}://{parsed.hostname}:{appium_server.port}", options=options)
 
     try:
         alert = driver.switch_to.alert
