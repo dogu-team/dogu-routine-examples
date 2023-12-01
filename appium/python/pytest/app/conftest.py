@@ -12,6 +12,7 @@ load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
 localhost = "127.0.0.1"
 serial = os.environ.get("DOGU_DEVICE_SERIAL")
+token = os.environ.get("DOGU_DEVICE_TOKEN")
 app_path = os.environ.get("DOGU_APP_PATH")
 device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
 device_gamium_server_port = 50061
@@ -25,13 +26,13 @@ pytest_plugins = ["pytest_dogu_report"]
 
 @pytest.fixture(scope="session")
 def device():
-    device_client = DeviceClient(localhost, device_server_port, 30)
+    device_client = DeviceClient(host=localhost, port=device_server_port, token=token, timeout=30)
     yield device_client
 
 
 @pytest.fixture(scope="session")
 def host():
-    host_client = DeviceHostClient(localhost, device_server_port, 30)
+    host_client = DeviceHostClient(host=localhost, port=device_server_port, token=token, timeout=30)
     yield host_client
 
 
