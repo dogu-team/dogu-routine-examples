@@ -14,6 +14,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 
 const Serial = process.env["DOGU_DEVICE_SERIAL"];
+const Token = process.env["DOGU_DEVICE_TOKEN"];
 const DeviceServerPort = parseInt(
   process.env["DOGU_DEVICE_SERVER_PORT"] ?? "5001"
 );
@@ -46,6 +47,7 @@ export let driver: webdriver.ThenableWebDriver;
 beforeAll(async () => {
   const host = new DeviceHostClient({
     port: DeviceServerPort,
+    token: Token,
     timeout: 10 * 60_000,
   });
   console.log("ensure browser and driver");
