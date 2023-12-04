@@ -96,7 +96,8 @@ def gamium_host_port(host: DeviceHostClient, device: DeviceClient):
 @pytest.fixture(scope="session")
 def gamium(driver: WebDriver, gamium_host_port: int):
     print("setup gamium")
-    service = TcpGamiumService(device_server_host, gamium_host_port, 30)
+    parsed = urlparse(device_server_url)
+    service = TcpGamiumService(parsed.hostname, gamium_host_port, 30)
     gamium = GamiumClient(service)
     gamium.connect()
 
