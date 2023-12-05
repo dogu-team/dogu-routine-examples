@@ -98,10 +98,11 @@ def gamium_host_port(host: DeviceHostClient, device: DeviceClient):
 def gamium(driver: WebDriver, gamium_host_port: int):
     print("setup gamium")
     parsed = urlparse(device_server_url)
+    host = parsed.hostname
     service = TcpGamiumService(parsed.hostname, gamium_host_port, 30)
     gamium = GamiumClient(service)
     gamium.connect()
-    stop_gamium_profile = start_gamium_profile(gamium)
+    stop_gamium_profile = start_gamium_profile(host, gamium_host_port)
 
     yield gamium
 
@@ -111,27 +112,31 @@ def gamium(driver: WebDriver, gamium_host_port: int):
     gamium.actions().app_quit().perform()
 
 
-def start_gamium_profile(gamium: GamiumClient):
+def start_gamium_profile(host: str, gamium_host_port: int):
     import requests
     from datetime import datetime
     import threading
     import time
 
-    def profile_loop(stop_event: threading.Event, gamium: GamiumClient):
-        def parse_platform() -> Optional[int]:
-            dogu_device_platform = os.environ.get("DOGU_DEVICE_PLATFORM")
-            if dogu_device_platform == 'linux':
-                return 1
-            elif dogu_device_platform == 'macos':
-                return 10
-            elif dogu_device_platform == 'windows':
-                return 20
-            elif dogu_device_platform == 'android':
-                return 30
-            elif dogu_device_platform == 'ios':
-                return 40
-            else:
-                return 0
+    def parse_platform() -> Optional[int]:
+        dogu_device_platform = os.environ.get("DOGU_DEVICE_PLATFORM")
+        if dogu_device_platform == 'linux':
+            return 1
+        elif dogu_device_platform == 'macos':
+            return 10
+        elif dogu_device_platform == 'windows':
+            return 20
+        elif dogu_device_platform == 'android':
+            return 30
+        elif dogu_device_platform == 'ios':
+            return 40
+        else:
+            return 0
+
+    def profile_main(stop_event: threading.Event, gamium: GamiumClient):
+        service = TcpGamiumService(host, gamium_host_port, 30)
+        gamium = GamiumClient(service)
+        gamium.connect()
 
         while not stop_event.is_set():
             try:
@@ -184,7 +189,7 @@ def start_gamium_profile(gamium: GamiumClient):
 
     print("start gamium profiler")
     stop_event = threading.Event()
-    thread = threading.Thread(target=profile_loop, args=(stop_event, gamium))
+    thread = threading.Thread(target=profile_main, args=(stop_event, gamium))
     thread.start()
 
     def stop_gamium_profile():
