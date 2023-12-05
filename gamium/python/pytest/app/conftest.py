@@ -10,6 +10,10 @@ from dogu.device.device_host_client import DeviceHostClient
 from dogu.device.appium_server import AppiumServerContext
 from gamium import *
 from dotenv import load_dotenv
+import requests
+from datetime import datetime
+import threading
+import time
 
 load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
@@ -92,7 +96,6 @@ def gamium_host_port(host: DeviceHostClient, device: DeviceClient):
     forward_closer.close()
 
 
-
 @pytest.fixture(scope="session")
 def gamium(driver: WebDriver, gamium_host_port: int):
     print("setup gamium")
@@ -106,6 +109,87 @@ def gamium(driver: WebDriver, gamium_host_port: int):
     print("teardown gamium")
     gamium.sleep(4000)
     gamium.actions().app_quit().perform()
+
+
+
+
+@pytest.fixture(scope="session")
+def gamium_profiler(gamium: GamiumClient):
+    def profile_loop(stop_event: threading.Event, gamium: GamiumClient):
+        def parse_platform() -> Optional[int]:
+            dogu_device_platform = os.environ.get("DOGU_DEVICE_PLATFORM")
+            if dogu_device_platform == 'linux':
+                return 1
+            elif dogu_device_platform == 'macos':
+                return 10
+            elif dogu_device_platform == 'windows':
+                return 20
+            elif dogu_device_platform == 'android':
+                return 30
+            elif dogu_device_platform == 'ios':
+                return 40
+            else:
+                return 0
+
+        while not stop_event.is_set():
+            try:
+                if not gamium.is_connected():
+                    print("gamium is not connected. skip profile loop")
+                    break
+
+                fps = gamium.profile().fps
+
+                dogu_api_base_url = os.environ.get("DOGU_API_BASE_URL")
+                if dogu_api_base_url is None:
+                    print("DOGU_API_BASE_URL is not set. skip profile loop")
+                    break
+
+                dogu_organization_id = os.environ.get("DOGU_ORGANIZATION_ID")
+                if dogu_organization_id is None:
+                    print("DOGU_ORGANIZATION_ID is not set. skip profile loop")
+                    break
+
+                dogu_device_id = os.environ.get("DOGU_DEVICE_ID")
+                if dogu_device_id is None:
+                    print("DOGU_DEVICE_ID is not set. skip profile loop")
+                    break
+
+                dogu_host_token = os.environ.get("DOGU_HOST_TOKEN")
+                if dogu_host_token is None:
+                    print("DOGU_HOST_TOKEN is not set. skip profile loop")
+                    break
+
+                platform = parse_platform()
+                if platform is None:
+                    print("DOGU_DEVICE_PLATFORM is not set. skip profile loop")
+                    break
+
+                response = requests.post(f"{dogu_api_base_url}/public/organizations/{dogu_organization_id}/devices/{dogu_device_id}/game-runtime-infos", json={
+                        "gameRuntimeInfos": [{
+                            "platform": platform,
+                            "fps": fps,
+                            "localTimeStamp": datetime.now().isoformat(),
+                        }]
+                    },
+                    headers={
+                        "Authorization": f"Bearer {dogu_host_token}"
+                    })
+                response.raise_for_status()
+            except Exception as e:
+                print(f"gamium profile loop error {e}")
+            finally:
+                time.sleep(5)
+
+    print("setup gamium profiler")
+
+    stop_event = threading.Event()
+    thread = threading.Thread(target=profile_loop, args=(stop_event, gamium))
+    thread.start()
+    yield
+
+    print("teardown gamium profiler")
+    stop_event.set()
+    thread.join()
 
 
 @pytest.fixture(scope="session")
