@@ -99,18 +99,17 @@ def gamium(driver: WebDriver, gamium_host_port: int):
     service = TcpGamiumService(parsed.hostname, gamium_host_port, 30)
     gamium = GamiumClient(service)
     gamium.connect()
+    stop_gamium_profile = start_gamium_profile(gamium)
 
     yield gamium
 
     print("teardown gamium")
+    stop_gamium_profile()
     gamium.sleep(4000)
     gamium.actions().app_quit().perform()
 
 
-
-
-@pytest.fixture(scope="session")
-def gamium_profiler(gamium: GamiumClient):
+def start_gamium_profile(gamium: GamiumClient):
     import requests
     from datetime import datetime
     import threading
@@ -181,16 +180,17 @@ def gamium_profiler(gamium: GamiumClient):
             finally:
                 time.sleep(5)
 
-    print("setup gamium profiler")
-
+    print("start gamium profiler")
     stop_event = threading.Event()
     thread = threading.Thread(target=profile_loop, args=(stop_event, gamium))
     thread.start()
-    yield
 
-    print("teardown gamium profiler")
-    stop_event.set()
-    thread.join()
+    def stop_gamium_profile():
+        print("stop gamium profiler")
+        stop_event.set()
+        thread.join()
+
+    return stop_gamium_profile
 
 
 @pytest.fixture(scope="session")
