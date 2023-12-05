@@ -10,10 +10,6 @@ from dogu.device.device_host_client import DeviceHostClient
 from dogu.device.appium_server import AppiumServerContext
 from gamium import *
 from dotenv import load_dotenv
-import requests
-from datetime import datetime
-import threading
-import time
 
 load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
@@ -115,6 +111,11 @@ def gamium(driver: WebDriver, gamium_host_port: int):
 
 @pytest.fixture(scope="session")
 def gamium_profiler(gamium: GamiumClient):
+    import requests
+    from datetime import datetime
+    import threading
+    import time
+
     def profile_loop(stop_event: threading.Event, gamium: GamiumClient):
         def parse_platform() -> Optional[int]:
             dogu_device_platform = os.environ.get("DOGU_DEVICE_PLATFORM")
