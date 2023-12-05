@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def test_click_wikipedia(driver: WebDriver):
-    search_element = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((AppiumBy.ACCESSIBILITY_ID, "Search Wikipedia")))
+    search_element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((AppiumBy.ACCESSIBILITY_ID, "Search Wikipedia")))
     search_element.click()
 
 

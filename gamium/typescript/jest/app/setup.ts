@@ -14,6 +14,7 @@ config({ path: ".env.local" });
 
 const Localhost = "127.0.0.1";
 const Serial = process.env["DOGU_DEVICE_SERIAL"];
+const Token = process.env["DOGU_DEVICE_TOKEN"];
 const AppPath = process.env["DOGU_APP_PATH"];
 const DeviceServerPort = parseInt(
   process.env["DOGU_DEVICE_SERVER_PORT"] ?? "5001"
@@ -35,7 +36,7 @@ let server: AppiumServerContext | undefined;
 let forwardClosable: DeviceCloser | undefined;
 
 beforeAll(async () => {
-  const device = new DeviceClient({ port: DeviceServerPort });
+  const device = new DeviceClient({ port: DeviceServerPort, token: Token });
   server = await device.runAppiumServer(Serial);
   const caps = await device.getAppiumCapabilities(Serial);
   caps["appium:app"] = AppPath;
@@ -54,7 +55,7 @@ beforeAll(async () => {
   await driver.dismissAlert().catch(() => {});
   await driver.acceptAlert().catch(() => {});
 
-  const host = new DeviceHostClient({ port: DeviceServerPort });
+  const host = new DeviceHostClient({ port: DeviceServerPort, token: Token });
   const gamiumHostPort = await host.getFreePort();
   forwardClosable = await device.forward(
     Serial,

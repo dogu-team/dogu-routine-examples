@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import pytest
 import os
 from pathlib import Path
@@ -12,10 +13,10 @@ from dotenv import load_dotenv
 
 load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
-localhost = "127.0.0.1"
 serial = os.environ.get("DOGU_DEVICE_SERIAL")
+token = os.environ.get("DOGU_DEVICE_TOKEN")
 app_path = os.environ.get("DOGU_APP_PATH")
-device_server_port = int(os.environ.get("DOGU_DEVICE_SERVER_PORT", 5001))
+device_server_url = os.environ.get("DOGU_DEVICE_SERVER_URL", "http://127.0.0.1:5001")
 device_gamium_server_port = 50061
 
 if serial is None:
@@ -27,13 +28,13 @@ pytest_plugins = ["pytest_dogu_sdk"]
 
 @pytest.fixture(scope="session")
 def device():
-    device_client = DeviceClient(localhost, device_server_port, 30)
+    device_client = DeviceClient(device_server_url, token=token, timeout=30)
     yield device_client
 
 
 @pytest.fixture(scope="session")
 def host():
-    host_client = DeviceHostClient(localhost, device_server_port, 30)
+    host_client = DeviceHostClient(device_server_url, token=token, timeout=30)
     yield host_client
 
 
@@ -58,7 +59,8 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient):
             "appium:app": app_path
         }
     )
-    driver = Remote(f"http://{localhost}:{appium_server.port}", options=options)
+    parsed = urlparse(device_server_url)
+    driver = Remote(f"{parsed.scheme}://{parsed.hostname}:{appium_server.port}", options=options)
 
     try:
         alert = driver.switch_to.alert
@@ -94,7 +96,8 @@ def gamium_host_port(host: DeviceHostClient, device: DeviceClient):
 @pytest.fixture(scope="session")
 def gamium(driver: WebDriver, gamium_host_port: int):
     print("setup gamium")
-    service = TcpGamiumService(localhost, gamium_host_port, 30)
+    parsed = urlparse(device_server_url)
+    service = TcpGamiumService(parsed.hostname, gamium_host_port, 30)
     gamium = GamiumClient(service)
     gamium.connect()
 

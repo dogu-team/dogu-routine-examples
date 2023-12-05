@@ -6,6 +6,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 
 const Serial = process.env["DOGU_DEVICE_SERIAL"];
+const Token = process.env["DOGU_DEVICE_TOKEN"];
 const AppPath = process.env["DOGU_APP_PATH"];
 const DeviceServerPort = parseInt(
   process.env["DOGU_DEVICE_SERVER_PORT"] ?? "5001"
@@ -23,7 +24,7 @@ export let driver: WebdriverIO.Browser;
 let server: AppiumServerContext | undefined;
 
 beforeAll(async () => {
-  const device = new DeviceClient({ port: DeviceServerPort });
+  const device = new DeviceClient({ port: DeviceServerPort, token: Token });
   server = await device.runAppiumServer(Serial);
   const caps = await device.getAppiumCapabilities(Serial);
   caps["appium:app"] = AppPath;
