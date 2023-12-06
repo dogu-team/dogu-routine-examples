@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node16",
+    "moduleResolution": "Bundler",
     "newLine": "lf",
     "noErrorTruncation": true,
     "noFallthroughCasesInSwitch": true,
@@ -29,7 +29,7 @@
     "incremental": true,
     "lib": ["ES2022.Error", "ES2022"],
     "rootDir": "../",
-    "sourceMap": false,
+    "sourceMap": true,
     "declaration": false,
     "declarationMap": false,
     "noEmit": true
