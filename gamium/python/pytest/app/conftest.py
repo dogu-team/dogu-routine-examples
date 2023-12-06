@@ -114,10 +114,13 @@ def gamium(driver: WebDriver, gamium_host_port: int):
 
 
 def start_gamium_profile(host: str, gamium_host_port: int):
+    from datetime import datetime, timezone
     import requests
-    from datetime import datetime
     import threading
     import time
+
+    def utc_now() -> str:
+        return datetime.now(timezone.utc).isoformat(timespec='microseconds')
 
     def parse_platform() -> Optional[int]:
         dogu_device_platform = os.environ.get("DOGU_DEVICE_PLATFORM")
@@ -176,7 +179,7 @@ def start_gamium_profile(host: str, gamium_host_port: int):
                         "gameRuntimeInfos": [{
                             "platform": platform,
                             "fps": fps,
-                            "localTimeStamp": datetime.now().isoformat(),
+                            "localTimeStamp": utc_now(),
                         }]
                     },
                     headers={
