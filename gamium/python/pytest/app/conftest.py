@@ -12,8 +12,6 @@ from dogu.device.appium_server import AppiumServerContext
 from gamium import *
 from dotenv import load_dotenv
 
-print(os.environ)
-
 load_dotenv(str(Path(__file__).parent.parent / '.env.local'))
 
 serial = os.environ.get("DOGU_DEVICE_SERIAL")
