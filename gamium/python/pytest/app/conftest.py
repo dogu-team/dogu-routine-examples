@@ -1,3 +1,4 @@
+from typing import Optional
 from urllib.parse import urlparse
 import pytest
 import os
