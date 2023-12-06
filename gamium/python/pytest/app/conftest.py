@@ -119,6 +119,8 @@ def start_gamium_profile(host: str, gamium_host_port: int):
     import threading
     import time
 
+    period_seconds = 3
+
     def utc_now() -> str:
         return datetime.now(timezone.utc).isoformat(timespec='microseconds')
 
@@ -189,7 +191,7 @@ def start_gamium_profile(host: str, gamium_host_port: int):
             except Exception as e:
                 print(f"gamium profile loop error {e}")
             finally:
-                time.sleep(5)
+                time.sleep(period_seconds)
 
     print("start gamium profiler")
     stop_event = threading.Event()
