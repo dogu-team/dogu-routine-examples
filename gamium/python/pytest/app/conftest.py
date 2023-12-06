@@ -139,7 +139,7 @@ def start_gamium_profile(host: str, gamium_host_port: int):
         else:
             return 0
 
-    def profile_main(stop_event: threading.Event, gamium: GamiumClient):
+    def profile_gamium_main(stop_event: threading.Event):
         service = TcpGamiumService(host, gamium_host_port, 30)
         gamium = GamiumClient(service)
         gamium.connect()
@@ -195,7 +195,7 @@ def start_gamium_profile(host: str, gamium_host_port: int):
 
     print("start gamium profiler")
     stop_event = threading.Event()
-    thread = threading.Thread(target=profile_main, args=(stop_event, gamium))
+    thread = threading.Thread(target=profile_gamium_main, args=(stop_event,))
     thread.start()
 
     def stop_gamium_profile():
