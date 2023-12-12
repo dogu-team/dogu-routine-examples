@@ -19,7 +19,7 @@
     "ts-jest": "29.1.1",
     "ts-node": "10.9.1",
     "webdriverio": "8.13.1",
-    "gamium": "2.0.6",
+    "gamium": "2.0.9",
     "dotenv": "16.0.3"
   },
   "type": "module"
