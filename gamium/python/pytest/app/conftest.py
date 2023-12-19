@@ -6,6 +6,7 @@ from pathlib import Path
 from appium.webdriver import Remote
 from appium.webdriver.webdriver import WebDriver
 from appium.options.common import AppiumOptions
+from appium.webdriver.common.appiumby import AppiumBy
 from dogu.device.device_client import DeviceClient
 from dogu.device.device_host_client import DeviceHostClient
 from dogu.device.appium_server import AppiumServerContext
@@ -73,8 +74,16 @@ def driver(appium_server: AppiumServerContext, device: DeviceClient):
         alert.accept()
     except:
         pass
-    driver.switch_to.context("NATIVE_APP")
+    try:
+        # samsung galaxy fold "Show multiple apps together" dialog
+        elems = driver.find_elements(AppiumBy.ID, "com.sec.android.app.launcher:id/close")
+        for elem in elems:
+            elem.click()
+    except:
+        pass
 
+    driver.switch_to.context("NATIVE_APP")
+    
     yield driver
 
     print("teardown driver")

@@ -22,10 +22,11 @@
       "request": "launch",
       "module": "pytest",
       "justMyCode": false,
+      "cwd": "${workspaceFolder}/gamium/python/pytest",
       "args": [
+        "app/test_dogurpgsample.py",
         "--capture=no",
-        "--rootdir=${workspaceFolder}/gamium/python/pytest",
-        "${workspaceFolder}/gamium/python/pytest/app/test_dogurpgsample.py"
+        "-x"
       ]
     },
     {
